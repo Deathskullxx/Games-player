@@ -1,0 +1,92 @@
+{
+  "name": "@microlink/proxy",
+  "description": "Interact with Microlink API without exposing your creedentials.",
+  "homepage": "https://github.com/microlinkhq/proxy",
+  "version": "3.0.4",
+  "main": "src/index.js",
+  "author": {
+    "email": "josefrancisco.verdu@gmail.com",
+    "name": "Kiko Beats",
+    "url": "https://github.com/Kikobeats"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microlinkhq/proxy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microlinkhq/proxy/issues"
+  },
+  "keywords": [
+    "authentication",
+    "authorization",
+    "cors",
+    "credentials",
+    "microlink",
+    "proxy"
+  ],
+  "dependencies": {
+    "@microlink/mql": "~0.10.4",
+    "cors": "~2.8.5",
+    "debug-logfmt": "~1.0.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "conventional-github-releaser": "latest",
+    "finepack": "latest",
+    "git-authors-cli": "latest",
+    "nano-staged": "latest",
+    "npm-check-updates": "latest",
+    "prettier-standard": "latest",
+    "simple-git-hooks": "latest",
+    "standard": "latest",
+    "standard-markdown": "latest",
+    "standard-version": "latest"
+  },
+  "engines": {
+    "node": ">= 12"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "npx untracked > .vercelignore",
+    "clean": "rm -rf node_modules",
+    "contributors": "(npx git-authors-cli && npx finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
+    "dev": "TZ=UTC NODE_ENV=development DEBUG=microlink-proxy* node src/server",
+    "heroku-prebuild": "npx untracked > .slugignore",
+    "lint": "standard-markdown README.md && standard",
+    "postrelease": "npm run release:tags && npm run release:github",
+    "prerelease": "npm run update:check && npm run contributors",
+    "pretest": "npm run lint",
+    "release": "standard-version -a",
+    "release:github": "conventional-github-releaser -p angular",
+    "release:tags": "git push --follow-tags origin HEAD:master",
+    "start": "TZ=UTC NODE_ENV=production DEBUG=microlink-proxy* node src/server",
+    "test": "exit 0",
+    "update": "ncu -u",
+    "update:check": "ncu -- --error-level 2"
+  },
+  "private": true,
+  "license": "MIT",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "nano-staged": {
+    "*.js,!*.min.js,": [
+      "prettier-standard"
+    ],
+    "*.md": [
+      "standard-markdown"
+    ],
+    "package.json": [
+      "finepack"
+    ]
+  },
+  "simple-git-hooks": {
+    "commit-msg": "npx commitlint --edit",
+    "pre-commit": "npx nano-staged"
+  }
+}
